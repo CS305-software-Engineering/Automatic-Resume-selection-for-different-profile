@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:resue/Modules/client/client_details.dart';
 
 import 'Modules/Login/login_screen.dart';
 
@@ -15,8 +16,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String dropdownValue = 'User';
-    List<String> listValue = <String>['User', 'Admin'];
+
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
         primaryColor: Colors.blue,
         scaffoldBackgroundColor: Colors.white,
       ),
-      home: LoginScreen(),
+      home: MybApp(),
     );
   }
 }
