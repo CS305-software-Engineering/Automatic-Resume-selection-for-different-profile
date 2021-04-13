@@ -1,3 +1,5 @@
+apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
 def localProperties = new Properties()
 def localPropertiesFile = rootProject.file('local.properties')
 if (localPropertiesFile.exists()) {
@@ -36,6 +38,7 @@ android {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.example.resue"
         minSdkVersion 16
+        multiDexEnabled true
         targetSdkVersion 30
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
@@ -56,4 +59,13 @@ flutter {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'com.android.support:multidex:1.0.3'
+    implementation platform('com.google.firebase:firebase-bom:27.0.0')
+
+    // Declare the dependency for the Firebase Authentication library
+    // When using the BoM, you don't specify versions in Firebase library dependencies
+    implementation 'com.google.firebase:firebase-auth-ktx'
+
+    // Also declare the dependency for the Google Play services library and specify its version
+    implementation 'com.google.android.gms:play-services-auth:19.0.0'
 }

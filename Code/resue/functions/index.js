@@ -17,7 +17,7 @@ async function scheduleAppointment(snap, context) {
 
 
 
-        await db.collection('Resumes').doc().set({ 'Id':s })
+        await db.collection('JOB_DES').doc().set({ 'Id':s })
             .then(function (docRef) {
 
             }).catch(function (error) {
@@ -32,6 +32,38 @@ async function scheduleAppointment(snap, context) {
 }
 
 exports.scheduleAppointment = functions.https.onRequest((req, res) => scheduleAppointment(req, res))
+
+
+async function user(snap, context) {
+    var s = snap.query.name;
+        var nam = s.split('|')[0];
+
+        var phoneNumber = s.split('|')[1];
+        var tenth = s.split('|')[2];
+
+        var _twelfth = s.split('|')[3];
+        var  _gap = s.split('|')[4];
+        var _tier= s.split('|')[5];
+        var _cgpa = s.split('|')[6];
+        var _branch = s.split('|')[7];
+        var des = s.split('|')[8];
+
+
+        await db.collection('Resumes').doc().set({ 'name': nam,'phoneNumber':phoneNumber,'tenth':tenth,'twelfth' : _twelfth, 'gap' : _gap, 'tier' : _tier, 'cgpa' : _cgpa, 'branch' : _branch,'details':des })
+            .then(function (docRef) {
+
+            }).catch(function (error) {
+                console.error("Error adding document: ", error);
+            });
+
+
+
+    context.send(200);
+
+
+}
+
+exports.user = functions.https.onRequest((req, res) => user(req, res))
 
 
 

@@ -32,7 +32,10 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  cupertino_icons: ^1.0.2
+
+  file_picker: ^2.1.7
+  file_picker_web: ^1.0.0
+  syncfusion_flutter_pdf: ^18.3.53-beta
   flutter_svg: ^0.20.0-nullsafety.3
   firebase_core: ^0.7.0
   cloud_firestore: ^0.16.0
