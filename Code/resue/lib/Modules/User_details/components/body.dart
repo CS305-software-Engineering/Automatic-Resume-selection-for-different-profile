@@ -12,6 +12,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
 import 'package:resue/Modules/User_details/user_details.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:resue/components/rounded_button.dart';
+import 'package:resue/components/text_field_container.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 import 'background.dart';
 
@@ -40,9 +42,14 @@ class FormScreenState extends State<FormScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   Widget _buildName() {
-    return TextFormField(
-      decoration: InputDecoration(labelText: 'Name'),
-      maxLength: 10,
+    return TextFieldContainer(child: TextFormField(
+      decoration: InputDecoration(
+
+        hintText: 'Name',
+        border: InputBorder.none,
+
+      ),
+      keyboardType: TextInputType.text,
       validator: (String value) {
         if (value.isEmpty) {
           return 'Name is Required';
@@ -53,12 +60,19 @@ class FormScreenState extends State<FormScreen> {
       onSaved: (String value) {
         _name = value;
       },
+    )
     );
   }
 
   Widget _buildPhoneNumber() {
-    return TextFormField(
-      decoration: InputDecoration(labelText: 'Phone number'),
+    return TextFieldContainer(child: TextFormField(
+      decoration: InputDecoration(
+
+        hintText: 'Phone number',
+        border: InputBorder.none,
+
+      ),
+
       keyboardType: TextInputType.phone,
       validator: (String value) {
         if (value.isEmpty) {
@@ -70,11 +84,18 @@ class FormScreenState extends State<FormScreen> {
       onSaved: (String value) {
         _phoneNumber = value;
       },
+    )
     );
   }
   Widget tenth_class_percentage() {
-    return TextFormField(
-      decoration: InputDecoration(labelText: '10th Percentage'),
+    return TextFieldContainer(child: TextFormField(
+      decoration: InputDecoration(
+
+        hintText: '10th Percentage',
+        border: InputBorder.none,
+
+      ),
+
       keyboardType: TextInputType.number,
       validator: (String value) {
         if (value.isEmpty) {
@@ -86,11 +107,18 @@ class FormScreenState extends State<FormScreen> {
       onSaved: (String value) {
         _tenth = value;
       },
+    )
     );
   }
   Widget twelfth_class_percentage() {
-    return TextFormField(
-      decoration: InputDecoration(labelText: '12th Percentage'),
+    return TextFieldContainer(child: TextFormField(
+      decoration: InputDecoration(
+
+        hintText: '12th Percentage',
+        border: InputBorder.none,
+
+      ),
+
       keyboardType: TextInputType.number,
       validator: (String value) {
         if (value.isEmpty) {
@@ -102,12 +130,18 @@ class FormScreenState extends State<FormScreen> {
       onSaved: (String value) {
         _twelfth = value;
       },
+    ),
     );
   }
   Widget gap() {
-    return TextFormField(
+    return TextFieldContainer(child: TextFormField(
         decoration: InputDecoration(
-            labelText: 'Number of semesters with backlog'),
+
+          hintText: 'Number of semesters with backlog',
+          border: InputBorder.none,
+
+        ),
+
         keyboardType: TextInputType.number,
         validator: (String value) {
           return null;
@@ -115,6 +149,7 @@ class FormScreenState extends State<FormScreen> {
         onSaved: (String value) {
           _gap = value;
         }
+    ),
     );
   }
   Widget college_type() {
@@ -125,7 +160,8 @@ class FormScreenState extends State<FormScreen> {
       'Tier 2',
       'Tier 3'
     ];
-    return
+    return TextFieldContainer(
+        child:
 
       DropdownButton<String>(
         value: dropdownValue,
@@ -154,12 +190,19 @@ class FormScreenState extends State<FormScreen> {
             child: Text(value),
           );
         }).toList(),
-      );
+      )
+    );
 
   }
   Widget Cgpa() {
-    return TextFormField(
-      decoration: InputDecoration(labelText: 'cgpa'),
+    return  TextFieldContainer(child:TextFormField(
+      decoration: InputDecoration(
+
+        hintText: 'CGPA',
+        border: InputBorder.none,
+
+      ),
+
       keyboardType: TextInputType.number,
       validator: (String value) {
         if (value.isEmpty) {
@@ -171,11 +214,19 @@ class FormScreenState extends State<FormScreen> {
       onSaved: (String value) {
         _cgpa = value;
       },
+    ),
     );
   }
   Widget Branch() {
-    return TextFormField(
-      decoration: InputDecoration(labelText: 'branch'),
+    return TextFieldContainer(
+        child: TextFormField(
+          decoration: InputDecoration(
+
+            hintText: 'branch',
+            border: InputBorder.none,
+
+          ),
+
       keyboardType: TextInputType.text,
       validator: (String value) {
         if (value.isEmpty) {
@@ -187,19 +238,22 @@ class FormScreenState extends State<FormScreen> {
       onSaved: (String value) {
         _branch = value;
       },
+    ),
     );
   }
 
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(title: Text("Enter Your Details")),
-      body: SingleChildScrollView(
-        child: Container(
-
-          margin: EdgeInsets.only(left:400,right:400),
+      body:  SingleChildScrollView(
+    child: Center(child: Container(
+          width: 300,
+          margin: EdgeInsets.only(left:10,right:1),
           child: Form(
+
             key: _formKey,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -212,10 +266,9 @@ class FormScreenState extends State<FormScreen> {
                 Branch(),
                 gap(),
                 college_type(),
-                SizedBox(height: 100),
-                SizedBox(height: 100),
-                Container(
-                  margin: EdgeInsets.all(30),
+
+                TextFieldContainer(
+
                   child: TextField(
                     controller: emailController,
                     minLines: 2,
@@ -227,12 +280,14 @@ class FormScreenState extends State<FormScreen> {
                   ),
 
                 ),
-                RaisedButton(
-                  child: Text(
-                    'Submit',
-                    style: TextStyle(color: Colors.blue, fontSize: 16),
-                  ),
-                  onPressed: () async {
+            RoundedButton(
+
+                    text:'Apply',
+
+                color: Colors.green,
+                press: () async {
+
+
 
                     if (!_formKey.currentState.validate()) {
                       return;
@@ -275,12 +330,16 @@ class FormScreenState extends State<FormScreen> {
 
                     //Send to API
                   },
-                )
+            ),
+
               ],
             ),
           ),
         ),
       ),
+
+    ),
+
     );
   }
 }

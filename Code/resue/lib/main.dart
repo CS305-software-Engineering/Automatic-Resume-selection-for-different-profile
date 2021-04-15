@@ -1,5 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:resue/Modules/User_details/components/body.dart';
+import 'package:resue/Modules/User_details/user_detail.dart';
 import 'package:resue/Modules/User_details/user_details.dart';
 import 'package:resue/Modules/client/client_details.dart';
 import 'package:resue/Modules/result/result.dart';
@@ -27,7 +29,7 @@ class MyApp extends StatelessWidget {
         primaryColor: Colors.blue,
         scaffoldBackgroundColor: Colors.white,
       ),
-      home:AppointmentPage(),
+      home:MyHomePage(),
     );
   }
 }

@@ -52,32 +52,15 @@ import 'package:flutter/material.dart';
 //import 'package:dartbase_admin/dartbase_admin.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 var list_name = [];
+
 Future<http.Response> http_call (var text1,var text2) async {
-print('https://api.dandelion.eu/datatxt/sim/v1/?text1='+text1+'&text2='+text2+'&token=3acbc91ea472416d9ff2074554c10e1f');
+  print('https://api.dandelion.eu/datatxt/sim/v1/?text1='+text1+'&text2='+text2+'&token=3acbc91ea472416d9ff2074554c10e1f');
   final response = await http.get(Uri.parse(
       'https://api.dandelion.eu/datatxt/sim/v1/?text1='+text1+'&text2='+text2+'&token=3acbc91ea472416d9ff2074554c10e1f')
   );
   return response;
 
- }
-// http_call (var text1,var text2) async {
-//   var url =
-//   Uri.parse(
-//       'https://api.dandelion.eu/datatxt/sim/v1/?text1='+text1+'&text2='+text2+'&token=83e41d6b660a4873921ce67bbeda9832');
-//   print(url);
-//   // Await the http get response, then decode the json-formatted response.
-//   var response = await http.post(url,headers: <String, String>{
-//     'Content-Type': 'application/json; charset=UTF-8',
-//   },
-//     body: jsonEncode(<String, String>{
-//       'title': 'ff' ,
-//     }),);
-//   var jsonResponse = await convert.jsonDecode(response.body);
-//   print("response..");
-//
-//   return jsonResponse['similarity'];
-//
-// }
+}
 
 class AppointmentPage extends StatefulWidget {
   @override
@@ -96,21 +79,7 @@ class _appointmentState extends State<AppointmentPage> {
   Widget build(BuildContext context) {
     final title = 'Shortlisted candidates';
     var curr_doc;
-    // var current_doc= FirebaseFirestore.instance
-    //             .collection('current_doc')
-    //             .doc('doc_id').get().then((QuerySnapshot querySnapshot)=>{
-    //               print(docref.docs[0].data["field"])
-    //             });
-    // FirebaseFirestore.instance
-    //     .collection('current_doc')
-    //     .get()
-    //     .then((QuerySnapshot querySnapshot) {
-    // querySnapshot.docs.forEach((doc) {
-    //   print("printing.....");
 
-    //     curr_doc = doc['curr_doc'];
-    //   });
-    // });
     return MaterialApp(
         title: title,
         home: Scaffold(
@@ -118,96 +87,72 @@ class _appointmentState extends State<AppointmentPage> {
               title: Text(title),
             ),
             body: StreamBuilder(
-                stream: FirebaseFirestore.instance
-                    .collection('Job_Description')
-                    .snapshots(),
-                builder: (BuildContext context1,
-                    AsyncSnapshot<QuerySnapshot> snapshot1) {
-                  if (!snapshot1.hasData) return Text('Loading...');
-                  List<QueryDocumentSnapshot> document11 = snapshot1.data.docs;
-                  //final int messageCount = snapshot1.data.docs.length;
-                  //curr_doc=document11['curr_doc'];
-                  snapshot1.data.docs.forEach((doc) {
+                        stream: FirebaseFirestore.instance
+                      .collection('Job_Description')
+                      .snapshots(),
+                        builder: (BuildContext context1,
+                        AsyncSnapshot<QuerySnapshot> snapshot1) {
+                          if (!snapshot1.hasData) return Text('Loading...');
+                          List<QueryDocumentSnapshot> document11 = snapshot1.data.docs;
+                          //final int messageCount = snapshot1.data.docs.length;
+                          //curr_doc=document11['curr_doc'];
+                          snapshot1.data.docs.forEach((doc) {
 
-                     curr_doc = doc['curr_doc'];
-                    print('curr_doc...');
-                    curr_doc = curr_doc.substring(0,1000);
-                    print(curr_doc);
+                          curr_doc = doc['job_desc'];
+                          curr_doc = curr_doc.substring(0,100);
+                          });
+                          //print(items22);
+                          //
+                          int postition=0;
 
 
-                  });
-                  //print(items22);
-                  //
-                  int postition=0;
-                  return StreamBuilder(
+                    return StreamBuilder(
 
                     stream: FirebaseFirestore.instance
                         .collection('Resumes')
                         .snapshots(),
                     builder: (BuildContext context,
-                        AsyncSnapshot<QuerySnapshot> snapshot) {
-                      if (!snapshot.hasData) return Text('Loading...');
-                      int i=0;
+                    AsyncSnapshot<QuerySnapshot> snapshot) {
+                    if (!snapshot.hasData) return Text('Loading...');
+                    int i=0;
 
-                      snapshot.data.docs.forEach((doc) {
+                    snapshot.data.docs.forEach((doc) {
+                      print("To enter");
+                      http_call(curr_doc,doc.data()['details'].substring(0,100)).then((id)  {
+                        var score  = id.body.split(',')[1].split(':')[1];
+                        print("Score:"+score.toString()+doc.data().toString());
 
-                        var data = doc.data();
-                        print(curr_doc);
-                        http_call(curr_doc,data['details']).then((id)  {
-                          print(double.parse(id.body.split(',')[1].split(':')[1]));
-
-
-
-                         data.addAll({'score':double.parse(id.body.split(',')[1].split(':')[1])});
-                         list_name.add(data);
-
-
-
-                        });
-
-
-
-
-
-
-
+                        doc.reference.update({'similarity':score});
 
                       });
+                    });
+                    final List<QueryDocumentSnapshot> entries = snapshot.data.docs;
+                    entries.sort((a, b) => b.data()['similarity'].compareTo(a.data()['similarity']));
+
+
+                    final int messageCount = snapshot.data.docs.length;
+
+                    final List<int> colorCodes = <int>[600, 500, 100];
 
 
 
-                      final int messageCount = snapshot.data.docs.length;
-
-
-                      return ListView.builder(
-                        itemCount: messageCount,
-                        itemBuilder: (context, position) {
-                          // snapshot.data.documents[index]['name'];
-                          // document['userRef'] exists here
-                          return Card(
-
-                            child: Padding(
-
-                              padding: const EdgeInsets.all(20.0),
-                              child: Text('hello'),
-
-
-
-
-                            ),
-                          );
-
-
-
-
-
-
-
-                        },
-                      );
+                    return  ListView.separated(
+                      padding: const EdgeInsets.all(8),
+                      itemCount: entries.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return Container(
+                          height: 50,
+                          color: Colors.amber[colorCodes[index]],
+                          child: Center(child: Text('Entry ${entries[index].data()['name']}')),
+                        );
+                      },
+                      separatorBuilder: (BuildContext context, int index) => const Divider(),
+                    );
                     },
-                  );
-                })
-        ));
+                    );
+                    }),
+
+        )
+    );
   }
 }

@@ -28,11 +28,11 @@ class Body extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Container(
-
+              width: size.width*0.5,
               child:Image.asset('assest/main.png',height : size.height * 0.80,),
             ),
             Container(
-
+              width: size.width*0.5,
               child:Column(
 
                 children: <Widget>[
