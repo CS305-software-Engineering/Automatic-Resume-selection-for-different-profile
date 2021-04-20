@@ -13,11 +13,36 @@ var presum = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334];
 
 async function scheduleAppointment(snap, context) {
     var s = snap.query.name;
+    var email = s.split('|')[0];
+    var job_des = s.split('|')[1];
+    var job_summary = s.split('|')[2];
+    console.log(email);
+    console.log(job_des);
+    console.log(job_summary);
+        await db.collection(email).doc('TOTAL').get()
+                                                              .then(function (docRef) {
+                                                                      currNum = parseInt(docRef.data().tot);
+                                                                      console.log("currNum: " + currNum);
+                                                                  })
+                                                                  .catch(function (error) {
+                                                                      console.error("Error adding document: ", error);
+                                                                  });
 
+        await db.collection(email).doc('TOTAL').update({ 'tot':currNum+1 })
+            .then(function (docRef) {
 
+            }).catch(function (error) {
+                console.error("Error adding document: ", error);
+            });
 
+        var jobid = "jobno"+currNum;
+        await db.collection(email).doc('posted_jobs').collection('jobs').doc(jobid).set({ 'job_desc':job_des ,'jobid':jobid,'job_summary':job_summary,'CLIENT_id':email})
+            .then(function (docRef) {
 
-        await db.collection('JOB_DES').doc().set({ 'Id':s })
+            }).catch(function (error) {
+                console.error("Error adding document: ", error);
+            });
+ await db.collection('posted_jobs').doc().set({ 'job_desc':job_des ,'jobid':jobid,'job_summary':job_summary,'CLIENT_id':email})
             .then(function (docRef) {
 
             }).catch(function (error) {
@@ -47,9 +72,10 @@ async function user(snap, context) {
         var _cgpa = s.split('|')[6];
         var _branch = s.split('|')[7];
         var des = s.split('|')[8];
+        var email = s.split('|')[9]
 
 
-        await db.collection('Resumes').doc().set({ 'name': nam,'phoneNumber':phoneNumber,'tenth':tenth,'twelfth' : _twelfth, 'gap' : _gap, 'tier' : _tier, 'cgpa' : _cgpa, 'branch' : _branch,'details':des })
+        await db.collection('students').doc(email).set({ 'name': nam,'phoneNumber':phoneNumber,'tenth':tenth,'twelfth' : _twelfth, 'gap' : _gap, 'tier' : _tier, 'cgpa' : _cgpa, 'branch' : _branch,'details':des })
             .then(function (docRef) {
 
             }).catch(function (error) {
@@ -64,6 +90,40 @@ async function user(snap, context) {
 }
 
 exports.user = functions.https.onRequest((req, res) => user(req, res))
+
+
+async function user1(snap, context) {
+       var s = snap.query.name;
+       var job_id,client_id;
+       job_id = s.split('|')[0];
+       client_id = s.split('|')[1];
+       email = s.split('|')[2];
+            var index;
+        var resume;
+        console.log(job_id)
+        console.log(client_id)
+
+
+          await db.collection('students').doc(email).get()
+                    .then(function (docRef) {
+                        resume= docRef.data();
+                    }).catch(function (error) {
+                        console.error("Error adding document: ", error);
+                    });
+
+
+  await db.collection(client_id).doc('posted_jobs').collection('jobs').doc(job_id).collection('applied_people').doc(email).set({ 'name': resume.name,'phoneNumber':resume.phoneNumber,'tenth':resume.tenth,'twelfth' : resume.twelfth, 'gap' : resume.gap, 'tier' : resume.tier, 'cgpa' : resume.cgpa, 'branch' : resume.branch,'details':resume.details ,'similarity':0})
+            .then(function (docRef) {
+
+            }).catch(function (error) {
+                console.error("Error adding document: ", error);
+            });
+
+    context.send(200);
+
+
+}
+exports.user1 = functions.https.onRequest((req, res) => user1(req, res))
 
 
 

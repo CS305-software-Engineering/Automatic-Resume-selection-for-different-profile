@@ -1,8 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:core';
 import 'dart:convert';
 
@@ -17,6 +17,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
 import 'package:resue/Modules/User_details/user_details.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:resue/Modules/result/result.dart';
+import 'package:resue/components/text_field_container.dart';
 import 'package:resue/components/variable.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 
@@ -54,23 +56,18 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 var list_name = [];
 
-Future<http.Response> http_call (var text1,var text2) async {
-  print('https://api.dandelion.eu/datatxt/sim/v1/?text1='+text1+'&text2='+text2+'&token=3acbc91ea472416d9ff2074554c10e1f');
-  final response = await http.get(Uri.parse(
-      'https://api.dandelion.eu/datatxt/sim/v1/?text1='+text1+'&text2='+text2+'&token=3acbc91ea472416d9ff2074554c10e1f')
-  );
-  return response;
 
-}
 
-class AppointmentPage extends StatefulWidget {
+class List_of_jobs extends StatefulWidget {
   @override
   _appointmentState createState() => _appointmentState();
 }
 
-class _appointmentState extends State<AppointmentPage> {
+class _appointmentState extends State<List_of_jobs> {
   //var now = new DateTime.now();
   final List<String> items = ["1", "2", "Third", "4"];
+  var client = FirebaseAuth.instance.currentUser;
+
 
   //final List<String> items=[];
 
@@ -78,39 +75,30 @@ class _appointmentState extends State<AppointmentPage> {
 
   //@override
   Widget build(BuildContext context) {
-    final title = 'Shortlisted candidates';
+    final title = 'List of posted jobs';
     var curr_doc;
 
     return MaterialApp(
         title: title,
         home: Scaffold(
-            appBar: AppBar(
-              title: Text(title),
-            ),
-            body:  StreamBuilder(
+          appBar: AppBar(
+            title: Text(title),
+          ),
+          body:
 
-                    stream: FirebaseFirestore.instance
-                        .collection(FirebaseAuth.instance.currentUser.email).doc('posted_jobs').collection('jobs').doc(jobid).collection('applied_people')
-                        .snapshots(),
-                    builder: (BuildContext context,
-                    AsyncSnapshot<QuerySnapshot> snapshot) {
+              StreamBuilder(
+
+                  stream: FirebaseFirestore.instance
+                      .collection(client.email).doc('posted_jobs').collection('jobs')
+                      .snapshots(),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<QuerySnapshot> snapshot) {
                     if (!snapshot.hasData) return Text('Loading...');
                     int i=0;
+                    print(client.email);
 
-                    snapshot.data.docs.forEach((doc) {
-                      print("To enter");
-                      print(job_des);
-                      print(doc.data()['details']);
-                      http_call(job_des,doc.data()['details']).then((id)  {
-                        var score  = id.body.split(',')[1].split(':')[1];
-                        print("Score:"+score.toString()+doc.data().toString());
-
-                        doc.reference.update({'similarity':score});
-
-                      });
-                    });
                     final List<QueryDocumentSnapshot> entries = snapshot.data.docs;
-                    entries.sort((a, b) => b.data()['similarity'].compareTo(a.data()['similarity']));
+
 
 
                     final int messageCount = snapshot.data.docs.length;
@@ -120,19 +108,33 @@ class _appointmentState extends State<AppointmentPage> {
 
 
                     return  ListView.separated(
+                      shrinkWrap: true,
                       padding: const EdgeInsets.all(8),
                       itemCount: entries.length,
                       itemBuilder: (BuildContext context, int index) {
-                        return Container(
-                          height: 100,
-                          color: Colors.amber[colorCodes[index]],
-                          child: Center(child: Text('Entry ${entries[index].data()['name']}')),
+
+                        return  TextFieldContainer (child: GestureDetector(
+
+
+                          child: Center(child: Text('JOB Number ${entries[index].data()['jobid']}')),
+                            onTap: () =>{
+                                Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) =>  AppointmentPage())),
+                               job_des = entries[index].data()['Id'],
+                               jobid =  entries[index].data()['jobid'],
+                              job_des = entries[index].data()['job_desc'],
+                               print(job_des)
+
+
+                            }
+                        ),
                         );
                       },
                       separatorBuilder: (BuildContext context, int index) => const Divider(),
                     );
-                    },
-                    ),
+                  },
+                )
 
 
         )

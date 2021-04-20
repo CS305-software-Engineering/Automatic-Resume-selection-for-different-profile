@@ -1,6 +1,6 @@
 import 'dart:core';
 import 'dart:convert';
-
+import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
 import 'package:firebase_core/firebase_core.dart';
@@ -297,7 +297,7 @@ class FormScreenState extends State<FormScreen> {
                     print(_phoneNumber);
                     var url =
                     Uri.parse(
-                        'https://us-central1-resume-b5075.cloudfunctions.net/user?name='+_name+'|'+_phoneNumber+'|'+_tenth+'|'+_twelfth+'|'+_gap+'|'+_tier+'|'+_cgpa+'|'+_branch+'|'+(emailController.text).toString());
+                        'https://us-central1-resume-b5075.cloudfunctions.net/user?name='+_name+'|'+_phoneNumber+'|'+_tenth+'|'+_twelfth+'|'+_gap+'|'+_tier+'|'+_cgpa+'|'+_branch+'|'+(emailController.text).toString()+'|'+FirebaseAuth.instance.currentUser.email);
                     // Await the http get response, then decode the json-formatted response.
                     var response = await http.post(url,headers: <String, String>{
                       'Content-Type': 'application/json; charset=UTF-8',

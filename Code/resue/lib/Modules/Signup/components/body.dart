@@ -12,7 +12,7 @@ import 'package:resue/components/rounded_password_field.dart';
 
 import 'background.dart';
 import 'or_divider.dart';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 String email;
 String password;
@@ -56,6 +56,11 @@ class Body extends StatelessWidget {
                   final newUser = await _auth.createUserWithEmailAndPassword(
                       email: email, password: password);
                   if(newUser!=null){
+                    print("Victory");
+                    FirebaseFirestore.instance
+                        .collection(email).doc().set({"email":email});
+                    FirebaseFirestore.instance
+                        .collection(email).doc('TOTAL').set({'tot':0});
 
                   }
 

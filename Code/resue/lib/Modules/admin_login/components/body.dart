@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:resue/Modules/Login/login_screen.dart';
 import 'package:resue/Modules/Signup/signup_screen.dart';
 import 'package:resue/Modules/User_details/components/body.dart';
 import 'package:resue/Modules/User_details/user_details.dart';
-import 'package:resue/Modules/admin_login/login_screen.dart';
+import 'package:resue/Modules/User_home/home_page.dart';
 import 'package:resue/Modules/client_home/client_appbar.dart';
 import 'package:resue/components/already_have_an_account_acheck.dart';
 import 'package:resue/components/rounded_button.dart';
@@ -16,8 +17,8 @@ import 'background.dart';
 
 String email;
 String password;
-class Body extends StatelessWidget {
-  const Body({
+class BodyAdmin extends StatelessWidget {
+  const BodyAdmin({
     Key key,
   }) : super(key: key);
 
@@ -68,7 +69,7 @@ class Body extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         builder: (context) {
-                          return AppBarPage();
+                          return SimpleAppBarPagestudent();
                         },
                       ),
                     );
@@ -99,7 +100,7 @@ class Body extends StatelessWidget {
               },
             ),
                   FlatButton(
-                    child: Text('Student login', style: TextStyle(fontSize: 20.0),),
+                    child: Text('Admin login', style: TextStyle(fontSize: 20.0),),
                     color: Colors.blueAccent,
                     textColor: Colors.white,
                     onPressed: () {
@@ -107,13 +108,13 @@ class Body extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                           builder: (context) {
-                            return AdminLoginScreen();
+                            return LoginScreen();
                           },
                         ),
                       );
                     },
                   ),
-              ],
+                ],
               ),
             ),
           ],
