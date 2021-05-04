@@ -1,11 +1,20 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'Screens/Date/date.dart';
-import 'Screens/Login/login_screen.dart';
-import 'Screens/Showapp/show_app.dart';
-import 'constants.dart';
-import 'Screens/Login/select_type.dart';
+import 'package:resue/Modules/Home/home_screen.dart';
+import 'package:resue/Modules/Signup/signup_screen.dart';
+import 'package:resue/Modules/User_details/components/body.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:resue/Modules/User_details/user_details.dart';
+import 'package:resue/Modules/admin_login/login_screen.dart';
+import 'package:resue/Modules/client/client_details.dart';
+
+import 'package:resue/Modules/listofavilablejobs/Available_jobs.dart';
+import 'package:resue/Modules/result/result.dart';
+import 'package:resue/test.dart';
+
+import 'Modules/Login/login_screen.dart';
+import 'Modules/listofjobs/listofjobs.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,18 +27,16 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String dropdownValue = 'User';
-    List<String> listValue = <String>['User', 'Admin'];
-    precacheImage(AssetImage("assets/images/signup.jpg"), context);
-    precacheImage(AssetImage("assets/images/login.jpg"), context);
+
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'leso',
+      title: 'login',
       theme: ThemeData(
-        primaryColor: kPrimaryColor,
+        primaryColor: Colors.blue,
         scaffoldBackgroundColor: Colors.white,
       ),
-      home: MyStatefulWidget(),
+      home:AdminLoginScreen()
     );
   }
 }

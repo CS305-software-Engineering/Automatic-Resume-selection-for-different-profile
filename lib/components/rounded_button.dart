@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../constants.dart';
+
 
 class RoundedButton extends StatelessWidget {
   final String text;
@@ -9,7 +9,7 @@ class RoundedButton extends StatelessWidget {
     Key key,
     this.text,
     this.press,
-    this.color = kPrimaryColor,
+    this.color = Colors.blue,
     this.textColor = Colors.white, Future<Null> Function() onPressed,
   }) : super(key: key);
 
@@ -18,7 +18,7 @@ class RoundedButton extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     return Container(
       margin: EdgeInsets.symmetric(vertical: 10),
-      width: size.width * 0.8,
+      width: size.width * 0.4,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(29),
         child: FlatButton(

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'text_field_container.dart';
-import '../constants.dart';
+
+import 'package:resue/components/text_field_container.dart';
 
 class RoundedPasswordField extends StatelessWidget {
   final ValueChanged<String> onChanged;
@@ -12,19 +12,21 @@ class RoundedPasswordField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFieldContainer(
+
       child: TextField(
+
         obscureText: true,
         onChanged: onChanged,
-        cursorColor: kPrimaryColor,
+        cursorColor: Colors.blue,
         decoration: InputDecoration(
           hintText: "Password",
           icon: Icon(
             Icons.lock,
-            color: kPrimaryColor,
+            color: Colors.blue,
           ),
           suffixIcon: Icon(
             Icons.visibility,
-            color: kPrimaryColor,
+            color: Colors.blue,
           ),
           border: InputBorder.none,
         ),
