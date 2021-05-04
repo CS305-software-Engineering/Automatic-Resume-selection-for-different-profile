@@ -12,6 +12,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
 import 'package:resue/Modules/User_details/user_details.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:resue/Modules/listofavilablejobs/Available_jobs.dart';
 import 'package:resue/components/rounded_button.dart';
 import 'package:resue/components/text_field_container.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
@@ -254,19 +255,35 @@ class FormScreenState extends State<FormScreen> {
       title: 'Details',
     home: Scaffold(
 
-      appBar: AppBar(title: Text("Enter Your Details",style:TextStyle(color: Colors.black),),backgroundColor: Colors.yellow.shade50,),
-
-      body:  SingleChildScrollView(
-        child: Center(child: Container(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-
-              image: AssetImage("assets/drop.jpg"),
-              fit: BoxFit.cover,
-            ),
+      appBar: AppBar(
+        title: Text("Enter Your Details",style:TextStyle(color: Colors.white),),
+        backgroundColor: Colors.blue,
+        leading: GestureDetector(
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) =>  List_of_Ajobs()));
+          },
+          child: Icon(
+            Icons.arrow_back,  // add custom icons also
           ),
+        ),
+      ),
+
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+
+            image: AssetImage("assets/drop.jpg"),
+            fit: BoxFit.cover,
+          ),
+        ),
+      child:  SingleChildScrollView(
 
 
+
+
+            child: Center(
           child: Form(
 
             key: _formKey,

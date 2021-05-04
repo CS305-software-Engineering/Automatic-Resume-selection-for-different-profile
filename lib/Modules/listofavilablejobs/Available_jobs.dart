@@ -118,16 +118,16 @@ class _appointmentState extends State<List_of_Ajobs> {
 
                     child: CustomAppBar(),
                   ),
-                  CupertinoSearchTextField(placeholder: "Search Jobs",itemColor: Colors.black,controller: emailController,
-                      onSubmitted :(String) {
-
-
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => List_of_Ajobs()));
-
-                      }
-                  ),
+                  // CupertinoSearchTextField(placeholder: "Search Jobs",itemColor: Colors.black,controller: emailController,
+                  //     onSubmitted :(String) {
+                  //
+                  //
+                  //       Navigator.push(
+                  //           context,
+                  //           MaterialPageRoute(builder: (context) => List_of_Ajobs()));
+                  //
+                  //     }
+                  // ),
 
                   Expanded(
                     flex:80,
@@ -225,7 +225,7 @@ class _appointmentState extends State<List_of_Ajobs> {
                                                     onTap: () =>
                                                     { Navigator.push(
                                                         context,
-                                                        MaterialPageRoute(builder: (context) =>  MyAppSplit())),
+                                                        MaterialPageRoute(builder: (context) =>  confirm())),
                                                       jobid = entries[index].item1.item2,
                                                       client_id = entries[index].item1.item1.item2,
 

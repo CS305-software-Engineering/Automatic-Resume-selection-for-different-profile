@@ -51,6 +51,19 @@ class CustomAppBar extends StatelessWidget {
             },
           ),
 
+          MenuItem(
+            title: "Details",
+            press: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return FormScreen();
+                  },
+                ),
+              );
+            },
+          ),
 
           MenuItem(
             title: "Applied Jobs",
